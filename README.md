@@ -49,7 +49,7 @@ class Point:
 
 ## 3. Clase `Line`
 
-La clase `Line` representa una línea definida por dos puntos y ofrece métodos para calcular su longitud, pendiente y si hay intersecciones con los ejes. **BONUS** fue crear el método `discretize_line\(n\)` donde hasta tengo entendido es como un `numpy.linspace\(start, end, num\)` pero hecho desde cero.
+La clase `Line` representa una línea definida por dos puntos y ofrece métodos para calcular su longitud, pendiente y si hay intersecciones con los ejes. **BONUS** fue crear el método `discretize_line\(n\)` donde hasta tengo entendido es como un `numpy.linspace` pero hecho desde cero.
 
 ### Código de la Clase `Line`
 
@@ -125,12 +125,12 @@ Determina el ancho y alto a partir de las coordenadas.
 Verifica que las líneas formen un rectángulo válido y calcula ancho y alto.
 
 Cuenta con métodos para saber si un punto se encuentra dentro de ese rectángulo, obtener área o perímetro. También es inteligente y sabe si las líneas que se pasan como la última forma de inicialización crean un rectángulo.
-**BONUS** era crear un método `compute_interference_line\(line\)`, pero solo reviso el caso base de si los extremos de la línea se encuentran dentro del rectángulo.
+**BONUS** era crear un método `compute_interference_line`, pero solo reviso el caso base de si los extremos de la línea se encuentran dentro del rectángulo.
 
 Uso un truco que chat GPT me otorgó para calcular múltiples condiciones con velocidad:
 ```python
 if not all(conditions):
-                    raise ValueError("Introduzca líneas que formen un rectángulo.")
+   raise ValueError("Introduzca líneas que formen un rectángulo.")
 ```
 
 ### Código de la Clase `Rectangle`

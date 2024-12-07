@@ -258,9 +258,9 @@ class Square(Rectangle):
 ```
 
 ## 6. Ejemplos en imágenes
-![Ejemplos de line](/images/line.png)
-![4 instancias de Rectangle](/images/rectangle.png)
-![Square funciona porque hereda bien](/images/square.png)
+![Ejemplos de line](/line.png)
+![4 instancias de Rectangle](/rectangle.png)
+![Square funciona porque hereda bien](/square.png)
 
 
 -----

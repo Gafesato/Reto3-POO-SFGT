@@ -2,14 +2,11 @@
 
 -----
 En este repositorio se encuentran las soluciones a los dos ejercicios solicitados por el profesor, la clase `Rectangle` y `Order`.
+  
+## ¡Acceso directo a lo importante!
 
-## Menú
-
-1. **Clase Rectangle**
-   - Esta clase incluye métodos para trabajar con propiedades geométricas de figuras básicas, como el cálculo de áreas, perímetros y otras operaciones útiles.
-
-2. **Clase Order**
-   - Esta clase se encarga de manejar pedidos de un usuario para devolver el total de la cuenta a pagar.
+1. [**Clase Rectangle**](#4.Clase`Rectangle`)
+2. [**Clase Order**](#ClaseOrder)
 
 ---
 # Documentación del Código: Clase Rectangle
@@ -231,7 +228,7 @@ class Rectangle:
         return [self.center.y - half_height, self.center.y + half_height]
 
     def compute_interference_line(self, line: "Line") -> bool:
-        """Verifica si una línea o parte de ella está dentro del rectángulo."""
+        """Verifica si una línea está dentro del rectángulo."""
         # Verificar si alguno de los extremos de la línea está dentro del rectángulo
         return (
             self.compute_interference_point(line.point1) or
@@ -264,7 +261,8 @@ class Square(Rectangle):
 
 
 -----
-# Clase Order, un restaurante fit, revisa el código y verás...why
+# Clase Order 
+### un restaurante fit, revisa el código y verás...why
 ## 1. Explicación del ejercicio
 
 Se ha creado una clase Order donde contiene cada elemento consumido por el usuario. Con eso el meserito le da el precio total a pagar, claro está que no había que abstraer eso. Se hace uso de herencia para simplificar la abstracción de la entrada, plato fuerte, bebida y postre, donde cada una es un item del menú. También se hace una asociación entre la clase Order y MenuItem, ya que la primera tiene varios MenuItem, usamos composición, pero un MenuItem no es una Orden. Por último, se aplican descuentos o tarifas si el consumidor pide una entrada para compartir o solicita una bebida con azúcar por ejemplo. 

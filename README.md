@@ -1,6 +1,4 @@
 # Reto3-POO-SFGT
-## Restaurant Order System
-
 
 -----
 En este repositorio se encuentran las soluciones a los dos ejercicios solicitados por el profesor, la clase `Rectangle` y `Order`.
@@ -8,179 +6,54 @@ En este repositorio se encuentran las soluciones a los dos ejercicios solicitado
 ## Menú
 
 1. **Clase Rectangle**
-   - Esta clase incluye métodos para trabajar con propiedades geométricas de figuras básicas, como el cálculo de áreas, perímetros y otras operaciones geométricas útiles.
+   - Esta clase incluye métodos para trabajar con propiedades geométricas de figuras básicas, como el cálculo de áreas, perímetros y otras operaciones útiles.
 
 2. **Clase Order**
-   - Esta clase se encarga de manejar pedidos o listas de elementos, permitiendo la creación, modificación y seguimiento de órdenes.
+   - Esta clase se encarga de manejar pedidos de un usuario para devolver el total de la cuenta a pagar.
+
+---
+# Documentación del Código: Clase Rectangle
+
+## 1. Explicación del Diseño de Clases
+
+Pues principalmente se usó la abstracción para concretar que es un punto y una línea. Ya a partir de aquí fue más sencillo crear la clase `Rectangle` porque se inicializa con puntos o con líneas.
+
+### Clases Principales
+1. **`Point`**: Representa un punto en un plano cartesiano.
+2. **`Line`**: Representa una línea definida por dos puntos.
+3. **`Rectangle`**: Modela un rectángulo que puede ser definido de varias formas, incluyendo esquinas, centro o líneas opuestas.
+4. **`Square`**: Clase que hereda de `Rectangle`.
 
 ---
 
-## 1. Explicación de la creación de la clase Rectangle
+## 2. Clase `Point`
 
-Bueno, me falta eso...
+La clase `Point` modela un punto en un plano cartesiano con coordenadas \(x\) e \(y\). Incluye métodos para calcular distancias entre puntos y una representación en formato de texto por si alguien quiere saber la forma del punto y que no sea <Main.object...>
 
----
+### Código de la Clase `Point`
 
-## 2. Clases Cambiar las clases
-
-- **`Order`**: La clase principal que representa la orden de un cliente. Puede contener múltiples elementos del menú.  
-- **`MenuItem`**: Una clase base, que incluye atributos como nombre, precio y cantidad. Usado por cada tipo de ítem. 
-- **Clases Derivadas**:  
-  - `Appetizer`: Representa elementos destinados a compartir o como entradas.  
-  - `MainCourse`: Representa platos principales, con un atributo opcional "is_meat".  
-  - `Beverage`: Representa bebidas, con atributos como tamaño y contenido de azúcar.  
-  - `Dessert`: Representa postres, con un atributo "on_season" para precios estacionales.  
-
-### Código en Python
 ```python
-import math
-
-# Clase Punto
 class Point:
-    def __init__(self, x: float=0, y: float=0):
+    def __init__(self, x: float = 0, y: float = 0):
         self.x = x
         self.y = y
-        self.__str__()
 
-    def compute_distance(self, point: "Point")-> float:
-        distance: float = ((self.x - point.x)**2+(self.y - point.y)**2)**(0.5)
-        return distance
+    def compute_distance(self, point: "Point") -> float:
+        """Calcula la distancia entre dos puntos."""
+        return ((self.x - point.x)**2 + (self.y - point.y)**2)**0.5
 
     def __str__(self) -> str:
         return f"({self.x}, {self.y})"
+```
+---
 
+## 3. Clase `Line`
 
-# Clase Rectángulo
-class Rectangle:
-    def __init__(self, method: int, *args):
-        match method:
-            case 1:
-                # Caso esquina
-                self.bl_corner, self.width, self.height = args
-                new_x = (self.bl_corner.x + self.width) / 2
-                new_y = (self.bl_corner.x - self.height) / 2
-                self.center = Point(new_x, new_y)
-            case 2:
-                # Caso centro
-                self.center, self.width, self.height = args
-            case 3:
-                # Caso esquinas opuestas
-                self.corner1, self.corner2 = args
-                if self.corner1.x == self.corner2.x and self.corner1.y == self.corner2.y:
-                    raise ValueError("Seleccione puntos en diferentes ubicaciones del espacio.")
-                self.width = abs(self.corner2.x - self.corner1.x)
-                self.height = abs(self.corner2.y - self.corner1.y)
-            case 4:
-                self.line1, self.line2, self.line3, self.line4 = args
-                
-                # adjacent_dict = {} se puede eliminar esto
-                opposite_lines = [] # [(line1, line3), (line2, line4)]
-                for i in range(len(args)):
-                    line = args[i]
-                    adjacent_dict[str(line)] = []
-                    x1, y1 = line.point1.x, line.point1.y
-                    x2, y2 = line.point2.x, line.point2.y
-                    opposite_line = None
-                    for j in range(i + 1, len(args)):
-                        next_line = args[j]
-                        x3, y3 = next_line.point1.x, next_line.point1.y
-                        x4, y4 = next_line.point2.x, next_line.point2.y
+La clase `Line` representa una línea definida por dos puntos y ofrece métodos para calcular su longitud, pendiente y si hay intersecciones con los ejes. **BONUS** fue crear el método `discretize_line\(n\)` donde hasta tengo entendido es como un `numpy.linspace\(start, end, num\)` pero hecho desde cero.
 
-                        # Comparar cada punto
-                        flag = False
-                        if (x1==x3 and y1==y3) or (x1==x4 and y1==y4):
-                            flag = True
-                        if (x2==x3 and y2==y3) or (x2==x4 and y2==y4):
-                            flag = True
+### Código de la Clase `Line`
 
-                        # Significa que son adyacentes los segmentos
-                        if flag:
-                            adjacent_dict[str(line)].append(str(next_line))
-                        else:
-                            opposite_line = next_line
-                            opposite_lines.append((line, next_line))
-
-                # print(adjacent_dict)
-                # print(opposite_lines)
-
-                # Ya sabiendo las opuestas puedo ver
-                line1, line3 = opposite_lines[0]
-                line2, line4 = opposite_lines[1]
-                condition_list = [
-                    line1.compute_length() == line3.compute_length(),
-                    line2.compute_length() == line4.compute_length(),
-                    line1.compute_slope() == line3.compute_slope(),
-                    line2.compute_slope() == line4.compute_slope()
-                ]
-                    
-                for condition in condition_list:
-                    if not condition:
-                        raise ValueError("Introduzca líneas que formen un rectángulo")
-
-                # Calcular width y height
-                self.width = line1.compute_length()
-                self.height = line2.compute_length()
-
-            case _:
-                raise ValueError("Ningún Método Seleccionado")
-
-
-    # Estas funciones deben trabajar para cualquier método
-    def compute_area(self) -> float:
-        area: float = self.width * self.height
-        return area
-
-    def compute_perimeter(self) -> float:
-        perimeter: float = (self.width + self.height) * 2
-        return perimeter
-
-    def compute_interference_point(self, point: "Point") -> bool:
-        """Verificar si un punto está dentro de un rectángulo."""
-        start_x, end_x = self.compute_width_range()
-        start_y, end_y = self.compute_height_range()
-        return (start_x <= point.x <= end_x) and (start_y <= point.y <= end_y)
-
-
-    def compute_width_range(self) -> list[float]:
-        """Obtener el dominio del rectángulo."""
-        mid: float = self.width/2
-        start: float = self.center.x - mid
-        end: float = self.center.x + mid
-        return [start, end]
-
-    def compute_height_range(self) -> list[float]:
-        """Obtener el rango del rectángulo."""
-        mid: float = self.height / 2
-        start: float = self.center.y - mid
-        end: float = self.center.y + mid
-        return [start, end]
-
-
-    def compute_interference_line(self, line: "Line") -> bool:
-        """Verificar si una linea/parte de ella está dentro de un rectángulo."""
-        # Solo el caso base de mirar los puntos extremos
-        return (self.compute_interference_point(line.point1) or self.compute_interference_point(line.point2))
-
-        # Mirar si un segmento intersecta con el borde del rectángulo
-        max_side: float = (self.height**2 + self.width**2)**0.5
-        for corner in self.corners():
-            if corner.compute_distance(point) > max_side:
-                # Significa que el punto está por fuera
-                break
-
-
-# Clase Cuadrado
-class Square(Rectangle):
-    def __init__(self, method: int, *args):
-        # Se llama a la clase padre y se inicializa
-        if method == 1:
-            super().__init__(1, args[0], args[1], args[1])
-        elif method == 2:
-            super().__init__(2, args[0], args[1], args[1])
-        elif method == 3:
-            super().__init__(3, args[0], args[1])
-
-
+```python
 class Line:
     """Plantilla para representar una línea en un plano."""
     def __init__(self, point1: "Point", point2: "Point") -> None:
@@ -214,16 +87,17 @@ class Line:
             return True
         return False
 
-    def discretize_line(self, n: int) -> list[float]:
-        self.line_points = []
+    def discretize_line(self, n: int) -> list[str]:
+        """Divide la línea en 'n' puntos distribuidos uniformemente."""
+        self.line_points: list["Point"] = []
 
         # Hallar la distancia entre puntos
-        distance_x = (self.point2.x-self.point1.x) / (n-1)
-        distance_y = (self.point2.y-self.point1.y) / (n-1)
+        distance_x: float = (self.point2.x-self.point1.x) / (n-1)
+        distance_y: float = (self.point2.y-self.point1.y) / (n-1)
         # Crear n puntos
         for i in range(n):
-            new_x = self.point1.x + (i * distance_x)
-            new_y = self.point1.y + (i * distance_y)
+            new_x: float = self.point1.x + (i * distance_x)
+            new_y: float = self.point1.y + (i * distance_y)
             new_point = Point(new_x, new_y)
             self.line_points.append(new_point)
 
@@ -232,11 +106,168 @@ class Line:
     def __str__(self) -> str:
         return f"({self.point1.x}, {self.point1.y}) - ({self.point2.x}, {self.point2.y})"
 ```
----
 
+---
+## 4. Clase `Rectangle`
+
+Representa un rectángulo en un plano. Esta clase tiene 4 formas de inicialización:
+
+1. Por esquina inferior izquierda, ancho y alto.
+Se calcula el centro automáticamente.
+
+2. Por el centro, ancho y alto.
+Define el rectángulo alrededor del punto central.
+
+3. Por dos esquinas opuestas.
+Determina el ancho y alto a partir de las coordenadas.
+
+4. Por cuatro líneas adyacentes.
+Verifica que las líneas formen un rectángulo válido y calcula ancho y alto.
+
+Cuenta con métodos para saber si un punto se encuentra dentro de ese rectángulo, obtener área o perímetro. También es inteligente y sabe si las líneas que se pasan como la última forma de inicialización crean un rectángulo.
+**BONUS** era crear un método `compute_interference_line\(line\)`, pero solo reviso el caso base de si los extremos de la línea se encuentran dentro del rectángulo.
+
+Uso un truco que chat GPT me otorgó para calcular múltiples condiciones con velocidad:
+```python
+if not all(conditions):
+                    raise ValueError("Introduzca líneas que formen un rectángulo.")
+```
+
+### Código de la Clase `Rectangle`
+
+```python
+class Rectangle:
+    def __init__(self, method: int, *args):
+        match method:
+            case 1:
+                # Caso esquina: esquina inferior izquierda, ancho y altura
+                self.bl_corner, self.width, self.height = args
+                new_x = (self.bl_corner.x + self.width) / 2
+                new_y = (self.bl_corner.y + self.height) / 2
+                self.center = Point(new_x, new_y)
+
+            case 2:
+                # Caso centro: centro, ancho y altura
+                self.center, self.width, self.height = args
+
+            case 3:
+                # Caso esquinas opuestas
+                self.corner1, self.corner2 = args
+
+                if self.corner1.x == self.corner2.x and self.corner1.y == self.corner2.y:
+                    raise ValueError("Seleccione puntos en diferentes ubicaciones del espacio.")
+
+                self.width = abs(self.corner2.x - self.corner1.x)
+                self.height = abs(self.corner2.y - self.corner1.y)
+
+            case 4:
+                # Caso definido por líneas
+                self.line1, self.line2, self.line3, self.line4 = args
+                opposite_lines = []
+
+                for i in range(len(args)):
+                    line = args[i]
+                    x1, y1 = line.point1.x, line.point1.y
+                    x2, y2 = line.point2.x, line.point2.y
+
+                    for j in range(i + 1, len(args)):
+                        next_line = args[j]
+                        x3, y3 = next_line.point1.x, next_line.point1.y
+                        x4, y4 = next_line.point2.x, next_line.point2.y
+
+                        # Verificar puntos adyacentes
+                        if not (
+                            (x1 == x3 and y1 == y3) or (x1 == x4 and y1 == y4) or
+                            (x2 == x3 and y2 == y3) or (x2 == x4 and y2 == y4)
+                        ):
+                            opposite_lines.append((line, next_line))
+
+                if len(opposite_lines) != 2:
+                    raise ValueError("Introduzca líneas que formen un rectángulo.")
+
+                # Verificar propiedades del rectángulo
+                line1, line3 = opposite_lines[0]
+                line2, line4 = opposite_lines[1]
+
+                conditions = [
+                    line1.compute_length() == line3.compute_length(),
+                    line2.compute_length() == line4.compute_length(),
+                    line1.compute_slope() == line3.compute_slope(),
+                    line2.compute_slope() == line4.compute_slope()
+                ]
+
+                if not all(conditions):
+                    raise ValueError("Introduzca líneas que formen un rectángulo.")
+
+                # Calcular ancho y altura
+                self.width = line1.compute_length()
+                self.height = line2.compute_length()
+
+            case _:
+                raise ValueError("Ningún método seleccionado.")
+
+    def compute_area(self) -> float:
+        """Calcula el área del rectángulo."""
+        return self.width * self.height
+
+    def compute_perimeter(self) -> float:
+        """Calcula el perímetro del rectángulo."""
+        return 2 * (self.width + self.height)
+
+    def compute_interference_point(self, point: "Point") -> bool:
+        """Verifica si un punto está dentro del rectángulo."""
+        start_x, end_x = self.compute_width_range()
+        start_y, end_y = self.compute_height_range()
+        return (start_x <= point.x <= end_x) and (start_y <= point.y <= end_y)
+
+    def compute_width_range(self) -> list[float]:
+        """Obtiene el rango horizontal del rectángulo."""
+        half_width = self.width / 2
+        return [self.center.x - half_width, self.center.x + half_width]
+
+    def compute_height_range(self) -> list[float]:
+        """Obtiene el rango vertical del rectángulo."""
+        half_height = self.height / 2
+        return [self.center.y - half_height, self.center.y + half_height]
+
+    def compute_interference_line(self, line: "Line") -> bool:
+        """Verifica si una línea o parte de ella está dentro del rectángulo."""
+        # Verificar si alguno de los extremos de la línea está dentro del rectángulo
+        return (
+            self.compute_interference_point(line.point1) or
+            self.compute_interference_point(line.point2)
+        )
+```
+---
+## 5. Clase `Square`
+
+La clase `Square` hereda de su clase padre `Rectangle`, y solo se inicializa con los primeros 3 métodos.
+
+### Código de la Clase `Square`
+
+```python
+class Square(Rectangle):
+    def __init__(self, method: int, *args):
+        # Se llama a la clase padre y se inicializa
+        if method == 1:
+            super().__init__(1, args[0], args[1], args[1])
+        elif method == 2:
+            super().__init__(2, args[0], args[1], args[1])
+        elif method == 3:
+            super().__init__(3, args[0], args[1])
+```
+
+## 6. Ejemplos en imágenes
+![Ejemplos de line](/images/line.png)
+![4 instancias de Rectangle](/images/rectangle.png)
+![Square funciona porque hereda bien](/images/square.png)
+
+
+-----
+# Clase Order, un restaurante fit, revisa el código y verás...why
 ## 1. Explicación del ejercicio
 
-Se ha creado una clase Order donde contiene cada elemento consumido por el usuario, y cualquier consumidor en general. Se le impartirá el precio total a pagar. Se hace uso de herencia para simplificar la abstracción de la entrada, plato fuerte, bebida y postre, donde cada una es un item del menú. También se hace una asociación entre la clase Order y MenuItem, ya que la primera tiene varios MenuItem, usamos composición, pero un MenuItem no es una Orden. Por último, se aplican descuentos o tarifas si el consumidor pide una entrada para compartir o solicita una bebida con azúcar por ejemplo. 
+Se ha creado una clase Order donde contiene cada elemento consumido por el usuario. Con eso el meserito le da el precio total a pagar, claro está que no había que abstraer eso. Se hace uso de herencia para simplificar la abstracción de la entrada, plato fuerte, bebida y postre, donde cada una es un item del menú. También se hace una asociación entre la clase Order y MenuItem, ya que la primera tiene varios MenuItem, usamos composición, pero un MenuItem no es una Orden. Por último, se aplican descuentos o tarifas si el consumidor pide una entrada para compartir o solicita una bebida con azúcar por ejemplo. 
 
 P.D: Ya que el restaurante cree en la hermandad y el veganismo.
 

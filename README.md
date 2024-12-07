@@ -6,7 +6,7 @@ En este repositorio se encuentran las soluciones a los dos ejercicios solicitado
 ## ¡Acceso directo a lo importante!
 
 1. [**Clase Rectangle**](#4-clase-rectangle)
-2. [**Clase Order**](clase-order)
+2. [**Clase Order**](#clase-order)
 
 ---
 # Documentación del Código: Clase Rectangle
